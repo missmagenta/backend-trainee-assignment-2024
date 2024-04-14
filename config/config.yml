@@ -1,0 +1,18 @@
+http:
+  port: "8080"
+  read_timeout: 5s
+  write_timeout: 5s
+  idle_timeout: 5m
+  max_header_bytes: 65000
+
+postgres:
+  url: "postgres://user:password@postgres:5432/postgres?sslmode=disable"
+  max_open_conns: 30
+  max_idle_conns: 5
+  conn_max_idle_time: 10m
+  conn_max_lifetime: 15m
+
+cache:
+  ttl: 5m
+  max_cost: 100000000
+  num_counters: 1000000

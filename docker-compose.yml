@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      - DB_HOST=postgres
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_NAME=postgres
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - PGDATA=/data/postgres
+    volumes:
+      - pg:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: "always"
+
+  integration-test:
+    build:
+      context: .
+      dockerfile: integration-test/Dockerfile
+    container_name: integration
+    image: integration-test
+    depends_on:
+      - server
+    environment:
+      - HOST=server
+
+volumes:
+  pg:
+    name: pg
